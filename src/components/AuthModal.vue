@@ -23,8 +23,8 @@ const visible = ref(false)
 const showModal = () => {
   visible.value = true
 }
+// 👇 Helper function que reinicia el form y limpia los mensajes de error
 const resetInputForm = () => {
-  // 👈 Helper function que reinicia el form y limpia los mensajes de error
   Object.assign(userCredentials, initialState)
   userStore.clearErrorMessage()
 }
