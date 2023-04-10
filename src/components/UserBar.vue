@@ -1,32 +1,33 @@
 <script setup>
 // IMPORTS //
 // -> Dependencies
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'
 // -> Stores
-import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/stores/userStore';
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/stores/userStore'
 // Components
-import UploadPhotoModal from './UploadPhotoModal.vue';
+import UploadPhotoModal from './UploadPhotoModal.vue'
 // Props //
 const props = defineProps(['user', 'userInfo', 'addNewPost'])
 // Route data //
 const route = useRoute()
-const {username: profileUsername} = route.params
+const { username: profileUsername } = route.params
 // Store data //
 const userStore = useUserStore()
-const {user} = storeToRefs(userStore)
-
-
+const { user } = storeToRefs(userStore)
 </script>
 
 <template>
   <div class="userbar-container" v-if="props.user">
     <div class="top-content">
       <a-typography-title :level="2">{{ props.user.username }}</a-typography-title>
-      <UploadPhotoModal
-        v-if="user && profileUsername === user.username"
-        :addNewPost="props.addNewPost"
-      />
+      <div v-if="user">
+        <UploadPhotoModal
+          v-if="profileUsername === user.username"
+          :addNewPost="props.addNewPost"
+        />
+        <a-button v-else>Follow</a-button>
+      </div>
     </div>
     <div class="bottom-content">
       <a-typography-title :level="5">{{ userInfo.posts }} posts</a-typography-title>
@@ -37,7 +38,6 @@ const {user} = storeToRefs(userStore)
   <div class="userbar-container" v-else>
     <div class="top-content">
       <a-typography-title :level="2">User Not Found</a-typography-title>
-      
     </div>
   </div>
 </template>
