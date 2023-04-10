@@ -9,7 +9,7 @@ import { useUserStore } from '@/stores/userStore'
 // Components
 import UploadPhotoModal from './UploadPhotoModal.vue'
 // Props //
-const props = defineProps(['user', 'userInfo', 'addNewPost'])
+const props = defineProps(['user', 'userInfo', 'addNewPost', 'isFollowing', 'updateIsFollowing'])
 // Route data //
 const route = useRoute()
 const { username: profileUsername } = route.params
@@ -18,10 +18,19 @@ const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 
 const followUser = async () => {
-  await supabase.from('followers_following').insert({
+  props.updateIsFollowing(true)
+  await supabase.from('followers_following').insert({  // Not await bc we not need backend response
     follower_id: user.value.id,
     following_id: props.user.id
   })
+}
+
+const unfollowUser = async () => {
+  props.updateIsFollowing(false)
+  await supabase.from('followers_following')   // Not await bc we not need backend response
+    .delete()
+    .eq('follower_id', user.value.id)
+    .eq('following_id', props.user.id)
 }
 </script>
 
@@ -34,7 +43,10 @@ const followUser = async () => {
           v-if="profileUsername === user.username"
           :addNewPost="props.addNewPost"
         />
-        <a-button v-else @click="followUser">Follow</a-button>
+        <div v-if="user.username !== profileUsername">
+          <a-button v-if="props.isFollowing" @click="unfollowUser">Following</a-button>
+          <a-button v-else @click="followUser">Follow</a-button>
+        </div>
       </div>
     </div>
     <div class="bottom-content">
