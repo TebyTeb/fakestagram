@@ -2,6 +2,7 @@
 // IMPORTS //
 // -> Dependencies
 import { useRoute } from 'vue-router'
+import { supabase } from '@/supabase';
 // -> Stores
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
@@ -15,6 +16,13 @@ const { username: profileUsername } = route.params
 // Store data //
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+
+const followUser = async () => {
+  await supabase.from('followers_following').insert({
+    follower_id: user.value.id,
+    following_id: props.user.id
+  })
+}
 </script>
 
 <template>
@@ -26,7 +34,7 @@ const { user } = storeToRefs(userStore)
           v-if="profileUsername === user.username"
           :addNewPost="props.addNewPost"
         />
-        <a-button v-else>Follow</a-button>
+        <a-button v-else @click="followUser">Follow</a-button>
       </div>
     </div>
     <div class="bottom-content">
