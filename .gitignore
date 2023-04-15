@@ -29,3 +29,5 @@ coverage
 
 # Environment values
 .env
+# Local Netlify folder
+.netlify
