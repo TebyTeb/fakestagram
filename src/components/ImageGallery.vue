@@ -1,7 +1,7 @@
 <script setup>
 defineProps(['posts'])
 // Static Data //
-const baseUrl = 'https://pmjhucdxqbeywyvbqpdj.supabase.co/storage/v1/object/public/images/'
+const baseUrl = import.meta.env.VITE_IMG_URL
 </script>
 
 <template>
