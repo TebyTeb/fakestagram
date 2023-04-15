@@ -1,11 +1,15 @@
 <script setup>
+// Props //
 defineProps(['post'])
+
+// Static Data //
+const baseUrl = import.meta.env.VITE_IMG_URL
 </script>
 
 <template>
   <a-card class="card" hoverable style="width: 240px">
     <template #cover>
-      <img alt="example" :src="post.url" />
+      <img alt="example" :src="`${baseUrl}${post.url}`" />
     </template>
     <a-card-meta :title="post.username">
       <template #description>{{ post.caption }}</template>
